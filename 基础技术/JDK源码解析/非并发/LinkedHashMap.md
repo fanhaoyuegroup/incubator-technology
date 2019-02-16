@@ -2,7 +2,7 @@
  LinkedHashMap实际上就是在HashMap的基础上维护了一个双向链表。
  LinkedHashMap大多数的方法是直接继承HashMap，为了实现双向链表的相关功能覆写了相关的方法。
  LinkedHashMap示意图：
- ![LinkedHashMap结构示意图](img/LinkedHashMap01.jpg)
+ ![LinkedHashMap结构示意图](../img/LinkedHashMap01.jpg)
  
 ### 1.构造方法
 
@@ -219,7 +219,7 @@ LinkedHashMap中覆写了这几个方法：
 
 ```
 删除示意图：
-![删除示意图](img/LinkedHashMap02.jpg)
+![删除示意图](../img/LinkedHashMap02.jpg)
 
 （3）get方法，遍历顺序变更
 ``` 
