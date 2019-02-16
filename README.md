@@ -31,9 +31,9 @@
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;目前有很多同学文章里面的图片丢失，因此对图片上传做如下要求：
 
-- 在自己文件夹下面创建一个 img 目录，里面存放你需要上传的图片，图片名称一定要和文章里面的图片名称对应上，使用相对路径。如下图：
+- 在自己文件夹下面创建一个 image 目录，里面存放你需要上传的图片，图片要求 **文章名-图片序号或者文章名-图片名称**，每篇文章图片一个目录，放在对应image下。如下图：
 
-![image.png](https://upload-images.jianshu.io/upload_images/10204326-3ba652a4fb9bcc87.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+![image.png](https://upload-images.jianshu.io/upload_images/10204326-86405196d3073c85.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
 - 大家也可以将自己的图片上传到公司图片服务器获取第三方云存储平台，然后拿到访问路径即可，如下图，上传到简书中。
 
