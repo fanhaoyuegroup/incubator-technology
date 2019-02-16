@@ -21,7 +21,7 @@
 
 1.新工程创建要求<br>
 
-新工程创建一律从 interest-group 下创建一个子 module
+新工程创建一律从 incubator-group 下创建一个子 module
 
 ![image.png](https://upload-images.jianshu.io/upload_images/10204326-1ea83f4df08ee47a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
