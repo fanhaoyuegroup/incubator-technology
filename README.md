@@ -1,8 +1,8 @@
-# interest-group 简介
+# incubator-technology 简介
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;为了更好的促进团队的学习技术氛围，更好的同步记录更新学习成果，为新同学提供优质的学习资料，我们决定维护一份优质的预售学习资料。推动大家共同进步。
 
 # 工程模块
-**interest-group** 兴趣小组学习总学习模块<br>
+**incubator-technology** 技术兴趣小组学习总学习模块<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| <br> 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|—— **document** : 存储每个兴趣小组总结的 md 文档<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| <br>
