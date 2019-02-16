@@ -1,0 +1,17 @@
+# IntelliJ project files
+.idea
+*.iml
+out
+gen
+
+target/
+*.DS_Store
+*.ipr
+*.iws
+*.classpath
+*.project
+.settings/
+/bin
+*.tar
+*.tar.gz
+*.zip
