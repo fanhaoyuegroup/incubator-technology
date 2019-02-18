@@ -334,7 +334,7 @@ class HashMapTask implements Runnable {
 ```
  其中一次执行结果截图：
  
-![在这里插入图片描述](https://img-blog.csdnimg.cn/20181218113731592.png)
+![在这里插入图片描述](https://assets.2dfire.com/frontend/98550ff570053cfd7fb46fb48fa2af3d.png)
  
 上面开了 50 个线程往 `HashMap` 中添加元素，每个线程执行 10 次 `put` 方法，在线程安全的情况下，`map` 中应该有 2500 个键值对，但是执行的结果大都是小与 2500 的（并不会产生死循环）。
  
