@@ -157,7 +157,8 @@
             itrs.elementDequeued();
         // 唤醒 notFull
         notFull.signal();
-      
+        return x;
+    }
 ```
 
 出队与入队的原理都是类似的，同样是先加锁，如果队列中没有任何元素，则获得锁的出队的线程阻塞 `notEmpty.await()`，直到有元素被添加到队列中，会唤醒 `notEmpty`，移除元素的线程才会被唤醒继续执行，如果队列中有元素，则直接把 `takeIndex` 位置上的元素出队。
