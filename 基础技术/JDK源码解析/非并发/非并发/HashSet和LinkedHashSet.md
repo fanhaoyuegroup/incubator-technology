@@ -49,10 +49,27 @@
 
 ```
 
-**（3）相关方法**
+问题来了：
 
-``` java
+- 为什么使用  (int)c.size()/.75f ?
+    
+- 为什么使用  16 ?
 
+
+**（3）主要方法**
+
+|       |	  |
+|-----------|---------|
+|boolean|add(E object)|
+|void|clear()|
+|Object|clone()|
+|boolean|contains(Object object)|
+|boolean|isEmpty()|
+|Iterator<E>|iterator()|
+|boolean|remove(Object object)|
+|int|size()|
+
+``` 
     public boolean add(E e) {
         return map.put(e, PRESENT)==null;
     }
@@ -64,15 +81,55 @@
             map.clear();
     }
     ......
+
 ```
 
-#### 2、不允许重复元素：
-底层实现是HashMap，HashSet是通过将值保存到HashMap中的key中，value值存储的都是PRESENT的Object对象。在HashMap中存储相同的key时（hashCode()返回值相等，通过equals比较也返回true），key值不会有变化，value新值会将旧值覆盖，
-#### 3、线程不安全
-底层实现是HashMap,由前面的学习可知，HashMap是线程不安全的，jdk1.7中，多线程情况下HashMap在扩容时会造成死循环；jdk1.8中，多线程情况下HashMap在扩容时会造成数据丢失。故HashSet也是线程不安全的
-替代方案：使用Collections.synchronizedSet
+#### 3、不允许重复元素：
+底层实现是HashMap，HashSet是通过将值保存到HashMap中的key中，value值存储的都是PRESENT的Object对象。在HashMap中存储相同的key时（hashCode()返回值相等，通过equals比较也返回true），key值不会有变化，value新值会将旧值覆盖。
+看下HashMap中的put方法中的判断
+``` 
+final V putVal(int hash, K key, V value, boolean onlyIfAbsent,
+                   boolean evict) {
+        Node<K,V>[] tab; Node<K,V> p; int n, i;
+        if ((tab = table) == null || (n = tab.length) == 0)
+            n = (tab = resize()).length;
+        if ((p = tab[i = (n - 1) & hash]) == null)
+            tab[i] = newNode(hash, key, value, null);
+        else {
+            Node<K,V> e; K k;
+            //这边可以看到，先判断Hash值是否相同，再有equal()方法比较
+            if (p.hash == hash &&
+                ((k = p.key) == key || (key != null && key.equals(k))))
+                e = p;
+            else if (p instanceof TreeNode)
+                e = ((TreeNode<K,V>)p).putTreeVal(this, tab, hash, key, value);
+            else {
+                for (int binCount = 0; ; ++binCount) {
+                    if ((e = p.next) == null) {
+                        p.next = newNode(hash, key, value, null);
+                        if (binCount >= TREEIFY_THRESHOLD - 1) // -1 for 1st
+                            treeifyBin(tab, hash);
+                        break;
+                    }
+                        //这里也是，先判断Hash值是否相同，再有equal()方法比较
+                    if (e.hash == hash &&
+                        ((k = e.key) == key || (key != null && key.equals(k))))
+                        break;
+                    p = e;
+                }
+            }
+           ......
+        }
+       ......
+    }
 
-#### 4.HashSet和HashMap的比较
+```
+
+#### 4、线程不安全
+底层实现是HashMap,由前面的学习可知，HashMap是线程不安全的，jdk1.7中，多线程情况下HashMap在扩容时会造成死循环等；jdk1.8中，多线程情况下HashMap在扩容时会造成数据丢失等。故HashSet也是线程不安全的
+替代方案：使用Collections.synchronizedSet(new HashSet(...))
+
+#### 5.HashSet和HashMap的比较
 | HashSet      |	HashMap  |
 |-----------|---------|
 | HashSet实现了Set接口| HashMap实现了Map接口|	
@@ -119,4 +176,4 @@ public class LinkedHashSet<E>
 HashSet存储元素是无序且不等于访问顺序
 LinkedHashSet存储元素是无序的，但是由于双向链表的存在，迭代时获取元素的顺序等于元素的添加顺序，注意这里不是访问顺序
 HashSet的public类型构造函数均是采用HashMap实现，所以HashSet能够存储不重复的对象，包括NULL。
-LinkedHashSet通过继承HashSet，采用LinkedhashMap进行实现，所以LinkedHashSet除了具有HashSet的功能外，还能保证元素按照加入顺序进行排序。
+LinkedHashSet通过继承HashSet，采用LinkedHashMap进行实现，所以LinkedHashSet除了具有HashSet的功能外，还能保证元素按照加入顺序进行排序。
