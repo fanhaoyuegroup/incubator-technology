@@ -40,7 +40,7 @@
  服务器在执行命令后，会将命令以RESP协议的格式追加到aof_buf的缓冲区末尾;将缓冲区的这些命令写入aof文件中;最后在一定规则下同步到硬盘中。
  
  在**redis.conf**配置中，定义aof持久化的相关信息： 
-``` 
+``` c
 appendonly no/yes               是否打开AOF功能
 appendfilename "appendonly.aof" AOF文件名称
 appendfsync always/everysec/no  同步频率
@@ -52,7 +52,7 @@ appendfsync always/everysec/no  同步频率
 
 4、源码小析
 
-``` 
+``` c
 int startAppendOnly(void) {
     char cwd[MAXPATHLEN]; /* Current working dir path for error messages. */
     int newfd;
