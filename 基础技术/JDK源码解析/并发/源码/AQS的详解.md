@@ -11,7 +11,7 @@
 #### 接下来我们直接看到AQS的内部，大致浏览一下类的内部结构。
 #### 首先可以看到，内部有一个叫做Node的内部类实现。这个类就是用于我们之前的设计中，当线程抢占资源失败时，排在队列中的每个单元。在Node的构造函数我们可以看到除了传入了当时的线程，还传入了一个叫mode的参数。
 ```
-		Node(Thread thread, Node mode) {     // Used by addWaiter
+	Node(Thread thread, Node mode) {     // Used by addWaiter
 			this.nextWaiter = mode;
    			this.thread = thread;
     	}
@@ -255,8 +255,8 @@ protected boolean tryReleaseShared(int arg)
 
 #### 和独占模式一样，如果尝试获取失败，会在队列中新建一个节点，持续等待机会去抢占
 ```
-	private void doAcquireShared(int arg) {
-		// 注意这里的Node的模式已经是SHARED了
+private void doAcquireShared(int arg) {
+	// 注意这里的Node的模式已经是SHARED了
         final Node node = addWaiter(Node.SHARED);
         boolean failed = true;
         try {
@@ -304,4 +304,4 @@ protected boolean tryReleaseShared(int arg)
 
 
 ## 超链接：
-[关于为何倒序查找的Cancel方法论证](http://www.ideabuffer.cn/2017/03/15/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3AbstractQueuedSynchronizer%EF%BC%88%E4%B8%80%EF%BC%89/)
+[关于为何倒序查找的Cancel方法论证, 直接看3.3.6小节](http://www.ideabuffer.cn/2017/03/15/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3AbstractQueuedSynchronizer%EF%BC%88%E4%B8%80%EF%BC%89/)
