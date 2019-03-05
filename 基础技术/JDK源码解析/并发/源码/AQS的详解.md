@@ -292,7 +292,11 @@ private void doAcquireShared(int arg) {
     private void setHeadAndPropagate(Node node, int propagate) {
         Node h = head; // Record old head for check below
         setHead(node);
-        // 当前节点抢占资源的返回值，标记之后的运行逻辑
+        // 这是和独占模式有区别的地方，在共享模式中，当设置完头节点之后，还要考虑是否还有唤醒后面的节点继续抢占
+        // 1:当prop参数大于0,即表示资源还要剩余
+        // 2:当原头节点为null或者已被标注为SIGNAL模式，就表示后继节点待被唤醒
+		 // 3:当现头节点为null或者已被标注为SIGNAL模式，就表示后继节点待被唤醒
+
         if (propagate > 0 || h == null || h.waitStatus < 0 ||
             (h = head) == null || h.waitStatus < 0) {
             Node s = node.next;
@@ -301,7 +305,32 @@ private void doAcquireShared(int arg) {
         }
     }
 ```
+#### 和独占模式的区别只是在因为共享模式允许多个线程同时占有资源，所以当一个线程竞争到资源时，其他线程仍可以被唤醒去竞争。接下来看看共享模式怎么去释放资源
+```
+    private void doReleaseShared() {
+        for (;;) {
+            Node h = head;
+            if (h != null && h != tail) {
+                int ws = h.waitStatus;
+                if (ws == Node.SIGNAL) {
+                    if (!compareAndSetWaitStatus(h, Node.SIGNAL, 0))
+                        continue;            // loop to recheck cases
+                    unparkSuccessor(h);
+                }
+                else if (ws == 0 &&
+                         !compareAndSetWaitStatus(h, 0, Node.PROPAGATE))
+                    continue;                // loop on failed CAS
+            }
+            if (h == head)                   // loop if head changed
+                break;
+        }
+    }
+```
+#### 具体的逻辑也和独占模式差不多，依旧是倒序的查找后继结点去唤醒。但是注意共享模式多了一个叫PROPAGATE的模式，表示在队列中的节点都可以依次被唤醒去竞争资源
+
+## 总结
+#### 综上，用大篇幅详解了AQS的主要两个模式的竞争和释放资源的过程。
 
 
 ## 超链接：
-[关于为何倒序查找的Cancel方法论证, 直接看3.3.6小节](http://www.ideabuffer.cn/2017/03/15/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3AbstractQueuedSynchronizer%EF%BC%88%E4%B8%80%EF%BC%89/)
+[关于为何倒序查找的Cancel方法论证](http://www.ideabuffer.cn/2017/03/15/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3AbstractQueuedSynchronizer%EF%BC%88%E4%B8%80%EF%BC%89/)
