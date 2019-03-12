@@ -209,7 +209,7 @@ resize中调用的方法：当结点是树的时候，调用split()
 ``` 
 补图说明以上代码中：
 
-![红黑树示例图](../img/TreeMap.png)
+![红黑树示例图](https://assets.2dfire.com/frontend/d4a1066fb624e59661ae32816c59997f.png)
 
 ``` java
         //左旋   该例子中传入的值为（80,40）
