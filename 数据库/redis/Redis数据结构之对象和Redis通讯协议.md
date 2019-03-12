@@ -2,7 +2,7 @@
 
 Redis并没有直接使用这些基本数据结构，而是基于这些数据结构创建了一个对象系统，这个系统包含字符串对象、列表对象、哈希对象、集合对象和有序集合对象这五种类型，接下来我们了解一下这些对象。
 
-1、对象的数据结构
+#### 1、对象的数据结构
 ``` 
 typedef struct redisObject {
     // 类型
@@ -43,15 +43,31 @@ typedef struct redisObject {
 
 ```
 
-2、redis的五大对象
+#### 2、redis的五大对象
 
-（1）字符串对象（redis_string）
+（1）字符串对象（REDIS_STRING）
+![sds对象](img/sds.png)
+
+（2）列表对象（REDIS_LIST）
+![list对象](img/redis_list.png)
+
+压缩列表对象
+![zipList对象](img/redis_zipList.png)
+
+（3）集合对象（REDIS_SET）
+![set对象](img/redis_set.png)
+
+（4）有序集合（REDIS_ZSET）
+![zset对象](img/redis_zset.png)
+
+（5）哈希对象（REDIS_HASH）
+![hash对象](img/redis_hash.png)
 
 
-3.对象共享
+#### 3.对象共享
 （这块萝卜丝说过，大家可以参考）
 
-4.内存回收机制 
+#### 4.内存回收机制 
 
 c不具备内存回收功能，Redis在自己对象机制上实现了引用计数功能，达到内存回收目的。每个对象的引用计数值在redisObject中的（int refcount;）来记录。
 
@@ -59,9 +75,9 @@ c不具备内存回收功能，Redis在自己对象机制上实现了引用计�
 
 - 当创建一个对象或者该对象被重新使用时，它的引用计数++；
 - 当一个对象不再被使用时，它的引用计数--；
-- 当一个对象的引用计数为0时，释放该对象内存资源。
+- 当一个对象的引用计数为0时，释放该对象内存资源（摘自于《redis的设计与实现》,但是在源码中可见，当refcount为1是就进行了释放的相关判断，这里可能和redis的版本有关系）。
 
-5.对象时空转长
+#### 5.对象时空转长
 
 redisObject 中lru属性用来计算空转时长。redis 的object idletime 命令可知给定键的“空转时长”，是用当前时间减去键的lru时间计算得出的。
 
@@ -82,7 +98,7 @@ OK
 
 ### 二、Redis通讯协议
 
-1.发送一个命令，处理的几大步骤：
+#### 1.发送一个命令，处理的几大步骤：
 
 （1）client连接管理；
 
@@ -90,9 +106,10 @@ OK
 
 （3）发送回复内容给client
 
+源码内容较多，可参考下面这个
 https://blog.csdn.net/hangbo216/article/details/53909302
 
-2.通讯协议格式描述：
+#### 2.通讯协议格式描述：
 ``` 
     单行字符串 以 + 符号开头；
     
@@ -106,7 +123,7 @@ https://blog.csdn.net/hangbo216/article/details/53909302
 ```
 
 
-3.小demo，看一下
+#### 3.小demo，看一下
 
 ``` java
 
