@@ -169,3 +169,11 @@ public final int accumulateAndGet(int x,IntBinaryOperator accumulatorFunction) {
 }
 ~~~
 源码中的CAS操作，全是调用的Unsafe中的CAS方法，Unsafe中的CAS操作都是native方法
+#### 5.AtomicInteger的使用举栗
+~~~ java
+//线程安全自增
+private AtomicInteger atomicInteger = new AtomicInteger();
+public void incr() {
+    atomicInteger.incrementAndGet();
+}
+~~~
