@@ -50,7 +50,8 @@
 `CopyOnWriteArrayList` 写锁使用的是 `ReentrantLock`，底层是一个被 `volatile` 关键字修饰的数组。构造函数相对来说也比较简单，就不介绍了，有兴趣的可以自己查看下。
 
 P：`volatile` 修饰数组能保证内存可见性吗？<br>
-A：
+A：`volatile` 修饰数组时，只能保证其对象引用的原子性，但是不能保证数组内部的元素具有原子性。如果我们想使用具有原子性的数组，可以选择 `AtomicIntegerArray`。<br>
+[https://stackoverflow.com/questions/5173614/java-volatile-array?r=SearchResults](https://stackoverflow.com/questions/5173614/java-volatile-array?r=SearchResults)
 
 **2.2 add 方法**
 
