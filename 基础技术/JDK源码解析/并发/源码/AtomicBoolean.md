@@ -2,7 +2,7 @@
 - 一个可以原子方式更新的{@code boolean}值。
 - 该值可以作为原子更新的标志，但是不能用作java.lang.Boolean的替代。
 #### 2. AtomicBoolean 内部的属性
-~~~ java
+``` java
 // 设置为使用Unsafe.compareAndSwapInt进行更新
 private static final Unsafe unsafe = Unsafe.getUnsafe();
 //保存修改变量的实际内存地址，通过unsafe.objectFieldOffset读取
@@ -19,9 +19,9 @@ static {
         }
 }
 private volatile int value;
-~~~
+```
 #### 3.构造函数
-~~~ java
+``` java
 /** 
 * Creates a new {@code AtomicBoolean} with the given initial value.
 * 通过给定的初始值，将boolean转为int后初始化value
@@ -37,9 +37,9 @@ public AtomicBoolean(boolean initialValue) { 
 * 初始化为默认值，默认为false，因为int的默认值是0
 */
 public AtomicBoolean() {}
-~~~
+```
 #### 4.get方法
-~~~ java
+``` java
 /** 
 * Returns the current value. 
 *
@@ -64,9 +64,9 @@ public final boolean getAndSet(boolean newValue) {
     } while (!compareAndSet(prev, newValue));
     return prev;
 }
-~~~
+```
 这边主要是调用了compareAndSet(boolean expect, boolean update)来设置值，我们就先看看这个方法
-~~~ java
+``` java
 /**
 * Atomically sets the value to the given updated value 
 * if the current value {@code ==} the expected value. 
@@ -83,9 +83,9 @@ update) {
     //unsafe.compareAndSwapInt:原子性地更新偏移地址为valueOffset的属性值为u，当且仅当偏移地址为alueOffset的属性的当前值为e才会更新成功，否则返回false。
     return unsafe.compareAndSwapInt(this, valueOffset, e, u);
 }
-~~~
+```
 #### 5.set方法
-~~~ java
+``` java
 /**
 * Unconditionally sets to the given value. 
 *
@@ -108,17 +108,17 @@ public final void lazySet(boolean newValue) {
     //unsafe.putOrderedInt(this, valueOffset, v):根据偏移地址，设置对应的值为指定值v。这是一个有序或者有延迟的putIntVolatile()方法，并且不保证值的改变被其他线程立即看到。只有在field被volatile修饰并且期望被修改的时候使用才会生效。
     unsafe.putOrderedInt(this, valueOffset, v);
 }
-~~~
+```
 这个类的方法不多，基本上上个面都列举到了。这个实现原子性的主要核心都是在Unsafe里面。有兴趣的话，可以把这个类的源码拉来看看。
 #### 5.AtomicBoolean的使用举栗
-~~~ java
+``` java
 //如果想让某种操作只执行一次,初始atomicBoolean为false
 AtomicBoolean atomicBoolean = new AtomicBoolean(false);
 //如果当前值为false，设置当前值为true，如果设置成功，返回true
 if (atomicBoolean.compareAndSet(false,true)){
     //执行操作
 }
-~~~
+```
 
 
 
