@@ -30,6 +30,9 @@ https://github.com/fanhaoyuegroup/interest-group/tree/master/design-pattern/src/
 - 子系统相对独立
 - 在层次化结构中，可以使用外观模式定义系统中每一层的入口，层与层之间不直接产生联系，而通过外观类建立联系，降低层之间的耦合度。
 
+参考：
+[史上最全设计模式导学目录（完整版）](https://blog.csdn.net/lovelion/article/details/17517213)
+
 
 
 
