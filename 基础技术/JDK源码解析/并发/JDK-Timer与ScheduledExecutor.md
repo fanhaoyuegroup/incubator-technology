@@ -1,6 +1,14 @@
 ## 1：JDK Timer（使用案例如HashedWheelTime）
 java.util.Timer是一个单线程的定时器，定时调度所拥有的TimerTask任务,TimerTask类是一个定时任务类，实现了Runnable接口，并且是一个抽象类，需要定时执行的任务都需要重写他的run方法
+![](../img/Timer.png)
+
+  TaskQueue是一个由平衡二叉树堆实现的优先级队列，每个Timer对象内部都有一个TaskQueue队列，用户线程调用Timer的Schedule方法就是把TimerTask任务添加到TaskQueue队列，在调用schedule方法时，long delay参数用来指明该任务延迟多少时间执行。
+
+  TimerThread是具体执行任务的线程，他从TaskQueue队列里面获取优先级最高的任务进行执行，只有执行了当前的任务才会从队列里获取下一个任务，而不管队列是否有任务已经达到了设置的delay时间，一个Timer只有一个TimerThrea线程，因此内部实现为多生产者单消费者模型
 ###### 1：构建一个定时器
+
+
+
 ```java
    public Timer() {
         this("Timer-" + serialNumber());
