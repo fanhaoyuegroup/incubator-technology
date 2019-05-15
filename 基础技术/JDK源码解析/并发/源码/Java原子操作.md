@@ -1,33 +1,105 @@
-### 一、Java 原子操作
+### Java 原子操作
 
-#### 二、Unsafe了解
+#### 一、Unsafe了解
 
 1、Unsafe类创建方法
 
+>jdk API
+```java
+private static final Unsafe unsafe = Unsafe.getUnsafe();
+
+@CallerSensitive
+    public static Unsafe getUnsafe() {
+        Class var0 = Reflection.getCallerClass();
+        if (var0.getClassLoader() != null) {
+            throw new SecurityException("Unsafe");
+        } else {
+            return theUnsafe;
+        }
+    }
+```
+
+>利用反射
+```java
+Field f = Unsafe.class.getDeclaredField("theUnsafe");
+f.setAccessible(true);
+Unsafe unsafe=(Unsafe) f.get(null);
+```
+
 2、CAS操作
+```java
+    private static final Unsafe unsafe = Unsafe.getUnsafe();
+    private static final long valueOffset;
+    private volatile int value;
+    //类型变量的偏移量
+    static {
+          try {
+            valueOffset = unsafe.objectFieldOffset
+                (AtomicInteger.class.getDeclaredField("value"));
+          } catch (Exception ex) { throw new Error(ex); }
+        }
+        
+    //compareAndSwapInt方法    
+    unsafe.compareAndSwapInt(this, valueOffset, expect, update);
+```
 
 3、利用Unsafe如何使用堆外内存
+>jdk 1.8 元空间
+
+>Unsafe API 
+```java
+//申请内存 var1  表示向内存请求分配的空间大小
+public native long allocateMemory(long var1);
+
+
+public native void freeMemory(long var1);
+```
 
 4、Unsafe核心方法
 
+> CAS 利弊
 
-#### 三、java.util.concurrent.atomic包中的类
+>park/unpark  wait()/notify()
+
+>内存分配
+
+
+
+
+#### 二、java.util.concurrent.atomic包中的类
 
 1、各个类的作用及应用场景
+
 
 2、1.8新特性
 
 
-#### 四、ABA 相关问题
+#### 三、ABA 相关问题
 
-#### 五、伪共享问题
+>什么是ABA问题
+
+>ABA有哪些危害
+
+>ABA解决方案
+
+#### 四、伪共享问题
+![缓存架构](https://assets.2dfire.com/frontend/5452a490625121da8e0b3c15a2992e00.png)
+>CPU缓存架构
+
+>CPU缓存行
+
+>伪共享产生的原因
+
+>伪共享如何解决和避免
+
+#### 五、内存屏障
+> 内存和CPU
+
+>内存屏障是什么
 
 
-#### 六、内存屏障
 
-
-
-关于原子类的问题，笔者整理了大概有以下这些：
+关于原子类的问题：
 >1、Unsafe是什么？
 
 >2、Unsafe为什么是不安全的？
@@ -96,3 +168,5 @@
 [什么是伪共享（false sharing）](https://mp.weixin.qq.com/s/rd13SOSxhLA6TT13N9ni8Q)
 
 [java并发包之LongAdder源码分析](https://mp.weixin.qq.com/s/_-z1Bz2iMiK1tQnaDD4N6Q)
+
+[内存屏障](https://www.jianshu.com/p/2ab5e3d7e510)
