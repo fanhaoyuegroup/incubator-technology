@@ -79,7 +79,7 @@ sentinel节点定期和master进行心跳检测，一旦发现master未正确相
 
 #### failover决策
 
-Redis的sentinel机制采用累死Raft协议实现选举算法。
+Redis的sentinel机制采用类似Raft协议实现选举算法。
 
 1:sentinelState的epoch变量类似与raft协议中的trem（选举回合）
 
