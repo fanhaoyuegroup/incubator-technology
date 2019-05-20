@@ -1,7 +1,9 @@
 ### 一、什么是 ArrayBlockingQueue
 
 `ArrayBlockingQueue` 是 GUC(java.util.concurrent) 包下的一个线程安全的阻塞队列，底层使用数组实现。
+
 ![ArrayBlockingQueue](https://assets.2dfire.com/frontend/d69daf2717f2d908bb8ebe6de4157d23.png)
+
 由此图可以看出，ArrayBlockingQueue内部有一个数组iesms，用来存放队列元素，putingdex变量表示入队元素下标，takeIndex是出队下标，count用来统计
 队列元素的个数，从定义可知，这些变量并没有使用volatile修饰，因为访问这些变量都是在锁块内，而加锁已经保证了锁内变量的内存可见性，另外有独占锁lock用来保证出入队列操作的原子性，这保证了同时
 只有一个线程可以进行出入队操作，另外，notEmpty，notFull条件变量用来很进行出入队的同步。
