@@ -1,7 +1,10 @@
 ### 一、什么是 ArrayBlockingQueue
 
 `ArrayBlockingQueue` 是 GUC(java.util.concurrent) 包下的一个线程安全的阻塞队列，底层使用数组实现。
-
+![ArrayBlockingQueue](https://assets.2dfire.com/frontend/d69daf2717f2d908bb8ebe6de4157d23.png)
+由此图可以看出，ArrayBlockingQueue内部有一个数组iesms，用来存放队列元素，putingdex变量表示入队元素下标，takeIndex是出队下标，count用来统计
+队列元素的个数，从定义可知，这些变量并没有使用volatile修饰，因为访问这些变量都是在锁块内，而加锁已经保证了锁内变量的内存可见性，另外有独占锁lock用来保证出入队列操作的原子性，这保证了同时
+只有一个线程可以进行出入队操作，另外，notEmpty，notFull条件变量用来很进行出入队的同步。
 除了线程安全这个特性，`ArrayBlockingQueue` 还有如下特点：
 - 数组大小确定，通过构造函数初始化阻塞队列大小，没有扩容机制，因为线程阻塞，不存在数组下标越界异常
 - 当队列已满时，会阻塞后面添加元素 [put(E e)] 的线程，直到调用了移除元素的方法使队列不满的情况下会唤醒前面添加元素的线程
@@ -167,6 +170,11 @@
 
 上面我们只简单的分析了 4 个方法，但是上面 4 个方法足以让我们了解 `ArrayBlockingQueue` 的实现原理了。其中比较复杂的方法可能就是 `remove` 方法了，因为移除的元素可能在任意一个位置，为了使元素紧凑，会将后面的元素向前移动一个位置，然后重置 `putIndex`，大概的流程就是这样。
 
+
+#### 总结
+ArrayBlockingQueue通过使用全局的独占锁实现了同时只能有一个线程进行出入队操作，锁粒度较大，有点类似在方法上加synchronized的味道，
+其中offer和poll操作通过简单的加锁进行出入队操作，而put与take则使用条件变量实现了，如果队列满则等待，如果队列空则等待。然后分别在出队和入队操作中发送
+信号激活等待线程实现同步，另外，相比LinkedBlockingQueue，ArrayBlockingQueue的size计算结果是准确的，因为计算前加了全局锁。
 
 
 
