@@ -141,6 +141,8 @@ mv = ha.handle(processedRequest, response, mappedHandler.getHandler());
 1.getHandlerAdapter()方法 传入原始的controller的handler(相当于需要被转换者)，然后返回适配器类
 2.然后使用适配器的handle方法处理
 ``` 
+## 4：SpringAOP
+我们知道 Spring AOP 的实现是基于代理模式，但是 Spring AOP 的增强或通知(Advice)使用到了适配器模式，与之相关的接口是AdvisorAdapter 。Advice 常用的类型有：BeforeAdvice（目标方法调用前,前置通知）、AfterAdvice（目标方法调用后,后置通知）、AfterReturningAdvice(目标方法执行结束后，return之前)等等。每个类型Advice（通知）都有对应的拦截器:MethodBeforeAdviceInterceptor、AfterReturningAdviceAdapter、AfterReturningAdviceInterceptor。Spring预定义的通知要通过对应的适配器，适配成 MethodInterceptor接口(方法拦截器)类型的对象（如：MethodBeforeAdviceInterceptor 负责适配 MethodBeforeAdvice）。
 
 ##总结
 1. 适配器模式的角色client(客户)->adapter(使用适配器)->target(被实现的东西)->adaptee(老接口)
