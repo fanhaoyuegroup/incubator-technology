@@ -6,7 +6,7 @@
 
 下面是 `ThreadLocal` 原理图，读源码的时候可以参考。
 
-![在这里插入图片描述](https://img-blog.csdnimg.cn/20190211184127434.png)
+![](../../img/ThreadLocalMap.png)
 
 ### 二、ThreadLocal 源码
 
