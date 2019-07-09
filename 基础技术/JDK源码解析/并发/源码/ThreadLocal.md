@@ -2,7 +2,7 @@
 
 在学习源码之前，有一个概念我们需要先明白：`ThreadLocal` 可以使多线程间数据读写隔离，因此 `ThreadLocal` 解决的是线程局部变量安全性问题，并不是多线程间共享变量安全性问题。
 
-`ThreadLocal` 在使用时必须先初始化 value，否则会报空指针异常，你可以通过 `set` 方法与重写 `initialValue` 方法两种方式初始化 value。
+`ThreadLocal` 在使用时可以通过 `set` 方法与重写 `initialValue` 方法两种方式初始化 value。
 
 下面是 `ThreadLocal` 原理图，读源码的时候可以参考。
 
