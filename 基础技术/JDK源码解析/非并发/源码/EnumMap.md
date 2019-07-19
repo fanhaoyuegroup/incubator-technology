@@ -161,7 +161,30 @@ PS： `keyType` 在构造函数中已经被初始化了。
 `EnmuMap` 添加键值对并没有扩容操作，因为一个枚举类型到底有多少元素在代码运行阶段是确定的，在构造函数中已经对 key 数组进行了初始化与赋值，value 数组的大小也已经被确定。还有一个需要注意的问题，在上面的 `put`
  方法中只对 value 进行了处理，并没有处理 key，原因就是 key 数组在构造函数中已经被赋值了。
  
- **2.2 remove 方法**
+**2.2 get 方法**
+
+``` java
+    public V get(Object key) {
+        return (isValidKey(key) ?
+                unmaskNull(vals[((Enum<?>)key).ordinal()]) : null);
+    }
+```
+
+在调用 `get` 方法获取 value 时，会先调用 `isValidKey` 方法检查 key 类型，检查通过后直接根据枚举元素的 `ordinal` 方法获取在 value 数组中的位置，获取后对 `null` 情况简单判断后直接返回。
+
+``` java
+    private boolean isValidKey(Object key) {
+        if (key == null)
+            return false;
+
+        // Cheaper than instanceof Enum followed by getDeclaringClass
+        Class<?> keyClass = key.getClass();
+        return keyClass == keyType || keyClass.getSuperclass() == keyType;
+    }
+```
+
+ 
+**2.3 remove 方法**
  
 ``` java
      public V remove(Object key) {
@@ -198,7 +221,7 @@ PS： `keyType` 在构造函数中已经被初始化了。
 
 `remove` 方法相对来说比较简单，这里就不总结了。
 
-**2.3 a question**
+**2.4 a question**
 
 从上面的源码分析中我们知道，key 数组自从在构造函数中完成初始化之后就没有执行过增删改的操作，是不是意味着我们根据枚举类型创建一个 `EnumMap` 之后，就算不添加任何键值对，也能根据其迭代器获取所有的 key，因为 key 在构造函数中已经被赋值了。看下面的代码：
 
