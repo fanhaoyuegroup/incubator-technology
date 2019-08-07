@@ -48,6 +48,25 @@ public void method(){
     }
 }
 ```
+
+##### 2.1 对象锁、类锁的概念
+对于以上使用方法中：
+>对象锁：synchronized修饰方法或代码块,锁的是对象的实例
+>类锁：synchronized修饰静态方法或静态代码块(实际不存在，用于区分非静态),一个class其中的静态方法和静态变量在内存中只会加载和初始化一份，所以，一旦一个静态的方法被申明为synchronized，此类的所有的实例化对象在调用该方法时，共用同一把锁
+
+代码链接：
+https://github.com/fanhaoyuegroup/interest-group/tree/master/multi-thread/src/main/java/com/fan/thread/thread_basic_02
+
+通过实例（不考虑嵌套的情况下）：
+
+- 不同实例之间的对象锁互不影响
+- 对象锁和类锁之间互不影响
+- 对同一实例或不同实例对象的类锁
+
+##### 2.2 Synchronized避免使用String字符串作为锁对象
+
+常量池特性
+
 - 总结：
     - 1、synchronized实现线程安全一定要关联一个对象（可以是实例、类类型）
     - 2、与ReentrantLock对比缺乏灵活性。
