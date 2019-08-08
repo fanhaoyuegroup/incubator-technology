@@ -33,11 +33,11 @@
 
 ``` java
     // 存储键值对的哈希表数组
-    transient Node<K,V>[] table;
+    transient Object[] table;
     // 存储的键值对个数
-    transient int size;
+    int size;
     // 扩容阈值
-    int threshold;
+    private transient int threshold;
 ```
 
 与 `HashMap` 不同的是 `IdentityHashMap` 并没有加载因子这个概念，因为这个加载因子是固定值，下面我们在构造函数中会看到。
