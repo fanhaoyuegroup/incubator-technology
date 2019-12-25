@@ -1,0 +1,56 @@
+@startuml
+
+group client
+:Proxy;
+:Invoker;
+:Cluster;
+note left:cluster 负责容错
+:Directory;
+
+:Router;
+note left:快速失败、失败轮询、失败重试、;
+note right:集群容错、负载均衡都是在客户端完成的;
+
+:LoadBalance;
+note left:平滑轮询、随机、最小活跃数、一致性Hash
+
+:Invoker;
+note left:
+:Filter;
+note left:处理上下文、限流、计数等
+:Client;
+note left:使用Client做数据传输 比如NettyClient、Http
+end group
+group data transport
+:codec;
+note left:私有协议的改造;
+:Serialization;
+note right
+序列化 Hessian2、FastJson、ProtoStuff、JDK、
+性能基准测试请参见
+Please see1
+end note
+end group
+group server
+:ThreadPool 底层io线程池、业务线程池;
+note left:io 线程池主要负责读写、序列化反序列化
+:业务线程池主要负责承载业务方法调用
+end left;
+:Server;
+:Exporter;
+:Filter;
+:Invoke;
+:具体的接口实现;
+end group
+group 文章引据
+note left
+1:关于注册中心的选择（CA OR CP ） https://mp.weixin.qq.com/s/uMj3JEhgyYw4CaIhP1-GTQ   来自InfoQ
+1.1:NACOS 服务治理：https://mp.weixin.qq.com/s/1lzeCu1fx9dGz_HAQA7-xw 来自小马哥
+2:关于序列化方式的性能基准测试: http://b.shiwuliang.com/%E5%BA%8F%E5%88%97%E5%8C%96benchmark%E2%80%94%E2%80%94Kryo%E3%80%81Hessian%E5%92%8Cjackson.html#more
+2.1:Kryo序列化在分布式处理情景下的问题: http://b.shiwuliang.com/Kryo%E5%BA%8F%E5%88%97%E5%8C%96%E5%9C%A8%E5%88%86%E5%B8%83%E5%BC%8F%E5%A4%84%E7%90%86%E6%83%85%E6%99%AF%E4%B8%8B%E7%9A%84%E9%97%AE%E9%A2%98.html
+3:负载均衡
+4:
+end note
+end group
+
+@enduml
